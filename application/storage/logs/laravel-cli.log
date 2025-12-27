@@ -1,0 +1,506 @@
+[2025-11-25 11:25:29] production.ERROR: SQLSTATE[HY000]: General error: 1194 Table 'tasks' is marked as crashed and should be repaired (SQL: select *, (SELECT event_id
+                                      FROM events
+                                      WHERE eventresource_id = projects.project_id
+                                      ORDER By event_created desc
+                                      LIMIT 1)
+                                      AS latestid, (SELECT filefolder_id
+                                      FROM file_folders
+                                      WHERE filefolder_projectid = projects.project_id
+                                      LIMIT 1)
+                                      AS default_folder_id, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id)
+                                      AS count_all_tasks, (SELECT COUNT(*)
+                                      FROM comments 
+                                      WHERE commentresource_id = projects.project_id and commentresource_type = 'project')
+                                      AS count_all_comments, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status IN('completed', 2))
+                                      AS count_completed_tasks, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status NOT IN('completed', 2))
+                                      AS count_pending_tasks, (SELECT COALESCE(count_completed_tasks/count_all_tasks*100, 0))
+                                               AS task_based_progress, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime')
+                                      AS sum_invoices_all, (SELECT COALESCE(SUM(payment_amount), 0.00)
+                                      FROM payments
+                                      WHERE payment_projectid = projects.project_id
+                                      AND payment_type = 'invoice')
+                                      AS sum_all_payments, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'due')
+                                      AS sum_invoices_due, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'overdue')
+                                      AS sum_invoices_overdue, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status NOT IN ('paid, draft'))
+                                      AS sum_invoices_unpaid, (SELECT COALESCE(sum_invoices_all - sum_all_payments, 0.00))
+                                      AS sum_outstanding_balance, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'paid')
+                                      AS sum_invoices_paid, (SELECT COALESCE(SUM(expense_amount), 0.00)
+                                      FROM expenses
+                                      WHERE expense_projectid = projects.project_id)
+                                      AS sum_expenses, (SELECT COUNT(*)
+                                      FROM files
+                                      WHERE fileresource_type = 'project'
+                                      AND fileresource_id = projects.project_id)
+                                      AS count_files, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status NOT IN (2)
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_open, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status = 2
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_closed, COALESCE((SELECT SUM(timer_time)
+                                      FROM timers
+                                      WHERE timer_status = 'stopped'
+                                      AND timer_projectid = projects.project_id), 0)
+                                      AS sum_hours from `projects` left join `clients` on `clients`.`client_id` = `projects`.`project_clientid` left join `categories` on `categories`.`category_id` = `projects`.`project_categoryid` left join `users` on `users`.`id` = `projects`.`project_creatorid` where 1 = 1 and `project_type` = project and `project_active_state` = active and `project_visibility` = visible order by `latestid` desc limit 15 offset 0) {"exception":"[object] (Illuminate\\Database\\QueryException(code: HY000): SQLSTATE[HY000]: General error: 1194 Table 'tasks' is marked as crashed and should be repaired (SQL: select *, (SELECT event_id
+                                      FROM events
+                                      WHERE eventresource_id = projects.project_id
+                                      ORDER By event_created desc
+                                      LIMIT 1)
+                                      AS latestid, (SELECT filefolder_id
+                                      FROM file_folders
+                                      WHERE filefolder_projectid = projects.project_id
+                                      LIMIT 1)
+                                      AS default_folder_id, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id)
+                                      AS count_all_tasks, (SELECT COUNT(*)
+                                      FROM comments 
+                                      WHERE commentresource_id = projects.project_id and commentresource_type = 'project')
+                                      AS count_all_comments, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status IN('completed', 2))
+                                      AS count_completed_tasks, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status NOT IN('completed', 2))
+                                      AS count_pending_tasks, (SELECT COALESCE(count_completed_tasks/count_all_tasks*100, 0))
+                                               AS task_based_progress, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime')
+                                      AS sum_invoices_all, (SELECT COALESCE(SUM(payment_amount), 0.00)
+                                      FROM payments
+                                      WHERE payment_projectid = projects.project_id
+                                      AND payment_type = 'invoice')
+                                      AS sum_all_payments, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'due')
+                                      AS sum_invoices_due, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'overdue')
+                                      AS sum_invoices_overdue, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status NOT IN ('paid, draft'))
+                                      AS sum_invoices_unpaid, (SELECT COALESCE(sum_invoices_all - sum_all_payments, 0.00))
+                                      AS sum_outstanding_balance, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'paid')
+                                      AS sum_invoices_paid, (SELECT COALESCE(SUM(expense_amount), 0.00)
+                                      FROM expenses
+                                      WHERE expense_projectid = projects.project_id)
+                                      AS sum_expenses, (SELECT COUNT(*)
+                                      FROM files
+                                      WHERE fileresource_type = 'project'
+                                      AND fileresource_id = projects.project_id)
+                                      AS count_files, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status NOT IN (2)
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_open, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status = 2
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_closed, COALESCE((SELECT SUM(timer_time)
+                                      FROM timers
+                                      WHERE timer_status = 'stopped'
+                                      AND timer_projectid = projects.project_id), 0)
+                                      AS sum_hours from `projects` left join `clients` on `clients`.`client_id` = `projects`.`project_clientid` left join `categories` on `categories`.`category_id` = `projects`.`project_categoryid` left join `users` on `users`.`id` = `projects`.`project_creatorid` where 1 = 1 and `project_type` = project and `project_active_state` = active and `project_visibility` = visible order by `latestid` desc limit 15 offset 0) at /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php:712)
+[stacktrace]
+#0 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(672): Illuminate\\Database\\Connection->runQueryCallback()
+#1 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run()
+#2 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2414): Illuminate\\Database\\Connection->select()
+#3 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2402): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2936): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2403): Illuminate\\Database\\Query\\Builder->onceWithColumns()
+#6 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\\Database\\Query\\Builder->get()
+#7 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(609): Illuminate\\Database\\Eloquent\\Builder->getModels()
+#8 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(809): Illuminate\\Database\\Eloquent\\Builder->get()
+#9 /home/wec24/public_html/application/app/Repositories/ProjectRepository.php(475): Illuminate\\Database\\Eloquent\\Builder->paginate()
+#10 /home/wec24/public_html/application/app/Cronjobs/ProjectProgressCron.php(36): App\\Repositories\\ProjectRepository->search()
+#11 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\\Cronjobs\\ProjectProgressCron->__invoke()
+#12 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#13 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#14 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#15 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#16 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/CallbackEvent.php(79): Illuminate\\Container\\Container->call()
+#17 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(143): Illuminate\\Console\\Scheduling\\CallbackEvent->run()
+#18 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(102): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->runEvent()
+#19 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->handle()
+#20 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#21 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#22 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#23 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#24 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call()
+#25 /home/wec24/public_html/application/vendor/symfony/console/Command/Command.php(298): Illuminate\\Console\\Command->execute()
+#26 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run()
+#27 /home/wec24/public_html/application/vendor/symfony/console/Application.php(1015): Illuminate\\Console\\Command->run()
+#28 /home/wec24/public_html/application/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand()
+#29 /home/wec24/public_html/application/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#30 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Application.php(94): Symfony\\Component\\Console\\Application->run()
+#31 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run()
+#32 /home/wec24/public_html/application/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#33 {main}
+
+[previous exception] [object] (PDOException(code: HY000): SQLSTATE[HY000]: General error: 1194 Table 'tasks' is marked as crashed and should be repaired at /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php:373)
+[stacktrace]
+#0 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(373): PDOStatement->execute()
+#1 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(705): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}()
+#2 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(672): Illuminate\\Database\\Connection->runQueryCallback()
+#3 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run()
+#4 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2414): Illuminate\\Database\\Connection->select()
+#5 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2402): Illuminate\\Database\\Query\\Builder->runSelect()
+#6 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2936): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#7 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2403): Illuminate\\Database\\Query\\Builder->onceWithColumns()
+#8 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\\Database\\Query\\Builder->get()
+#9 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(609): Illuminate\\Database\\Eloquent\\Builder->getModels()
+#10 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(809): Illuminate\\Database\\Eloquent\\Builder->get()
+#11 /home/wec24/public_html/application/app/Repositories/ProjectRepository.php(475): Illuminate\\Database\\Eloquent\\Builder->paginate()
+#12 /home/wec24/public_html/application/app/Cronjobs/ProjectProgressCron.php(36): App\\Repositories\\ProjectRepository->search()
+#13 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\\Cronjobs\\ProjectProgressCron->__invoke()
+#14 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#15 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#16 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#17 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#18 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/CallbackEvent.php(79): Illuminate\\Container\\Container->call()
+#19 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(143): Illuminate\\Console\\Scheduling\\CallbackEvent->run()
+#20 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(102): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->runEvent()
+#21 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->handle()
+#22 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#23 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#24 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#25 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#26 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call()
+#27 /home/wec24/public_html/application/vendor/symfony/console/Command/Command.php(298): Illuminate\\Console\\Command->execute()
+#28 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run()
+#29 /home/wec24/public_html/application/vendor/symfony/console/Application.php(1015): Illuminate\\Console\\Command->run()
+#30 /home/wec24/public_html/application/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand()
+#31 /home/wec24/public_html/application/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#32 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Application.php(94): Symfony\\Component\\Console\\Application->run()
+#33 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run()
+#34 /home/wec24/public_html/application/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#35 {main}
+"} 
+[2025-12-01 09:18:13] production.ERROR: SQLSTATE[HY000]: General error: 1194 Table 'projects' is marked as crashed and should be repaired (SQL: select *, (SELECT event_id
+                                      FROM events
+                                      WHERE eventresource_id = projects.project_id
+                                      ORDER By event_created desc
+                                      LIMIT 1)
+                                      AS latestid, (SELECT filefolder_id
+                                      FROM file_folders
+                                      WHERE filefolder_projectid = projects.project_id
+                                      LIMIT 1)
+                                      AS default_folder_id, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id)
+                                      AS count_all_tasks, (SELECT COUNT(*)
+                                      FROM comments 
+                                      WHERE commentresource_id = projects.project_id and commentresource_type = 'project')
+                                      AS count_all_comments, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status IN('completed', 2))
+                                      AS count_completed_tasks, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status NOT IN('completed', 2))
+                                      AS count_pending_tasks, (SELECT COALESCE(count_completed_tasks/count_all_tasks*100, 0))
+                                               AS task_based_progress, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime')
+                                      AS sum_invoices_all, (SELECT COALESCE(SUM(payment_amount), 0.00)
+                                      FROM payments
+                                      WHERE payment_projectid = projects.project_id
+                                      AND payment_type = 'invoice')
+                                      AS sum_all_payments, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'due')
+                                      AS sum_invoices_due, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'overdue')
+                                      AS sum_invoices_overdue, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status NOT IN ('paid, draft'))
+                                      AS sum_invoices_unpaid, (SELECT COALESCE(sum_invoices_all - sum_all_payments, 0.00))
+                                      AS sum_outstanding_balance, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'paid')
+                                      AS sum_invoices_paid, (SELECT COALESCE(SUM(expense_amount), 0.00)
+                                      FROM expenses
+                                      WHERE expense_projectid = projects.project_id)
+                                      AS sum_expenses, (SELECT COUNT(*)
+                                      FROM files
+                                      WHERE fileresource_type = 'project'
+                                      AND fileresource_id = projects.project_id)
+                                      AS count_files, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status NOT IN (2)
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_open, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status = 2
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_closed, COALESCE((SELECT SUM(timer_time)
+                                      FROM timers
+                                      WHERE timer_status = 'stopped'
+                                      AND timer_projectid = projects.project_id), 0)
+                                      AS sum_hours from `projects` left join `clients` on `clients`.`client_id` = `projects`.`project_clientid` left join `categories` on `categories`.`category_id` = `projects`.`project_categoryid` left join `users` on `users`.`id` = `projects`.`project_creatorid` where 1 = 1 and `project_type` = project and `project_active_state` = active and `project_visibility` = visible order by `latestid` desc limit 15 offset 0) {"exception":"[object] (Illuminate\\Database\\QueryException(code: HY000): SQLSTATE[HY000]: General error: 1194 Table 'projects' is marked as crashed and should be repaired (SQL: select *, (SELECT event_id
+                                      FROM events
+                                      WHERE eventresource_id = projects.project_id
+                                      ORDER By event_created desc
+                                      LIMIT 1)
+                                      AS latestid, (SELECT filefolder_id
+                                      FROM file_folders
+                                      WHERE filefolder_projectid = projects.project_id
+                                      LIMIT 1)
+                                      AS default_folder_id, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id)
+                                      AS count_all_tasks, (SELECT COUNT(*)
+                                      FROM comments 
+                                      WHERE commentresource_id = projects.project_id and commentresource_type = 'project')
+                                      AS count_all_comments, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status IN('completed', 2))
+                                      AS count_completed_tasks, (SELECT COUNT(*)
+                                      FROM tasks
+                                      WHERE task_projectid = projects.project_id
+                                      AND task_status NOT IN('completed', 2))
+                                      AS count_pending_tasks, (SELECT COALESCE(count_completed_tasks/count_all_tasks*100, 0))
+                                               AS task_based_progress, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime')
+                                      AS sum_invoices_all, (SELECT COALESCE(SUM(payment_amount), 0.00)
+                                      FROM payments
+                                      WHERE payment_projectid = projects.project_id
+                                      AND payment_type = 'invoice')
+                                      AS sum_all_payments, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'due')
+                                      AS sum_invoices_due, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'overdue')
+                                      AS sum_invoices_overdue, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status NOT IN ('paid, draft'))
+                                      AS sum_invoices_unpaid, (SELECT COALESCE(sum_invoices_all - sum_all_payments, 0.00))
+                                      AS sum_outstanding_balance, (SELECT COALESCE(SUM(bill_final_amount), 0.00)
+                                      FROM invoices
+                                      WHERE bill_projectid = projects.project_id
+                                      AND bill_invoice_type = 'onetime'
+                                      AND bill_status = 'paid')
+                                      AS sum_invoices_paid, (SELECT COALESCE(SUM(expense_amount), 0.00)
+                                      FROM expenses
+                                      WHERE expense_projectid = projects.project_id)
+                                      AS sum_expenses, (SELECT COUNT(*)
+                                      FROM files
+                                      WHERE fileresource_type = 'project'
+                                      AND fileresource_id = projects.project_id)
+                                      AS count_files, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status NOT IN (2)
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_open, (SELECT COUNT(*)
+                                      FROM tickets
+                                      WHERE ticket_status = 2
+                                      AND ticket_projectid = projects.project_id)
+                                      AS count_tickets_closed, COALESCE((SELECT SUM(timer_time)
+                                      FROM timers
+                                      WHERE timer_status = 'stopped'
+                                      AND timer_projectid = projects.project_id), 0)
+                                      AS sum_hours from `projects` left join `clients` on `clients`.`client_id` = `projects`.`project_clientid` left join `categories` on `categories`.`category_id` = `projects`.`project_categoryid` left join `users` on `users`.`id` = `projects`.`project_creatorid` where 1 = 1 and `project_type` = project and `project_active_state` = active and `project_visibility` = visible order by `latestid` desc limit 15 offset 0) at /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php:712)
+[stacktrace]
+#0 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(672): Illuminate\\Database\\Connection->runQueryCallback()
+#1 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run()
+#2 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2414): Illuminate\\Database\\Connection->select()
+#3 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2402): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2936): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2403): Illuminate\\Database\\Query\\Builder->onceWithColumns()
+#6 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\\Database\\Query\\Builder->get()
+#7 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(609): Illuminate\\Database\\Eloquent\\Builder->getModels()
+#8 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(809): Illuminate\\Database\\Eloquent\\Builder->get()
+#9 /home/wec24/public_html/application/app/Repositories/ProjectRepository.php(475): Illuminate\\Database\\Eloquent\\Builder->paginate()
+#10 /home/wec24/public_html/application/app/Cronjobs/ProjectProgressCron.php(36): App\\Repositories\\ProjectRepository->search()
+#11 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\\Cronjobs\\ProjectProgressCron->__invoke()
+#12 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#13 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#14 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#15 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#16 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/CallbackEvent.php(79): Illuminate\\Container\\Container->call()
+#17 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(143): Illuminate\\Console\\Scheduling\\CallbackEvent->run()
+#18 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(102): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->runEvent()
+#19 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->handle()
+#20 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#21 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#22 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#23 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#24 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call()
+#25 /home/wec24/public_html/application/vendor/symfony/console/Command/Command.php(298): Illuminate\\Console\\Command->execute()
+#26 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run()
+#27 /home/wec24/public_html/application/vendor/symfony/console/Application.php(1015): Illuminate\\Console\\Command->run()
+#28 /home/wec24/public_html/application/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand()
+#29 /home/wec24/public_html/application/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#30 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Application.php(94): Symfony\\Component\\Console\\Application->run()
+#31 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run()
+#32 /home/wec24/public_html/application/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#33 {main}
+
+[previous exception] [object] (PDOException(code: HY000): SQLSTATE[HY000]: General error: 1194 Table 'projects' is marked as crashed and should be repaired at /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php:373)
+[stacktrace]
+#0 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(373): PDOStatement->execute()
+#1 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(705): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}()
+#2 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(672): Illuminate\\Database\\Connection->runQueryCallback()
+#3 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run()
+#4 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2414): Illuminate\\Database\\Connection->select()
+#5 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2402): Illuminate\\Database\\Query\\Builder->runSelect()
+#6 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2936): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#7 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2403): Illuminate\\Database\\Query\\Builder->onceWithColumns()
+#8 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\\Database\\Query\\Builder->get()
+#9 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(609): Illuminate\\Database\\Eloquent\\Builder->getModels()
+#10 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(809): Illuminate\\Database\\Eloquent\\Builder->get()
+#11 /home/wec24/public_html/application/app/Repositories/ProjectRepository.php(475): Illuminate\\Database\\Eloquent\\Builder->paginate()
+#12 /home/wec24/public_html/application/app/Cronjobs/ProjectProgressCron.php(36): App\\Repositories\\ProjectRepository->search()
+#13 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\\Cronjobs\\ProjectProgressCron->__invoke()
+#14 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#15 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#16 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#17 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#18 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/CallbackEvent.php(79): Illuminate\\Container\\Container->call()
+#19 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(143): Illuminate\\Console\\Scheduling\\CallbackEvent->run()
+#20 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleRunCommand.php(102): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->runEvent()
+#21 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Console\\Scheduling\\ScheduleRunCommand->handle()
+#22 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#23 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#24 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#25 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#26 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call()
+#27 /home/wec24/public_html/application/vendor/symfony/console/Command/Command.php(298): Illuminate\\Console\\Command->execute()
+#28 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run()
+#29 /home/wec24/public_html/application/vendor/symfony/console/Application.php(1015): Illuminate\\Console\\Command->run()
+#30 /home/wec24/public_html/application/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand()
+#31 /home/wec24/public_html/application/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#32 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Console/Application.php(94): Symfony\\Component\\Console\\Application->run()
+#33 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run()
+#34 /home/wec24/public_html/application/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#35 {main}
+"} 
+[2025-12-01 15:23:02] production.ERROR: SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) (SQL: select * from `settings` left join `settings2` on `settings2`.`settings2_id` = `settings`.`settings_id` where `settings_id` = 1 limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) (SQL: select * from `settings` left join `settings2` on `settings2`.`settings2_id` = `settings`.`settings_id` where `settings_id` = 1 limit 1) at /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php:712)
+[stacktrace]
+#0 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(672): Illuminate\\Database\\Connection->runQueryCallback()
+#1 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run()
+#2 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2414): Illuminate\\Database\\Connection->select()
+#3 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2402): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2936): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2403): Illuminate\\Database\\Query\\Builder->onceWithColumns()
+#6 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\\Database\\Query\\Builder->get()
+#7 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(609): Illuminate\\Database\\Eloquent\\Builder->getModels()
+#8 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Concerns/BuildsQueries.php(294): Illuminate\\Database\\Eloquent\\Builder->get()
+#9 /home/wec24/public_html/application/app/Providers/ConfigSystemServiceProvider.php(30): Illuminate\\Database\\Eloquent\\Builder->first()
+#10 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\\Providers\\ConfigSystemServiceProvider->boot()
+#11 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#12 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#13 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#14 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#15 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(924): Illuminate\\Container\\Container->call()
+#16 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(905): Illuminate\\Foundation\\Application->bootProvider()
+#17 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}()
+#18 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(906): array_walk()
+#19 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#20 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(237): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap()
+#21 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith()
+#22 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#23 /home/wec24/public_html/application/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#24 {main}
+
+[previous exception] [object] (PDOException(code: 2002): SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) at /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:70)
+[stacktrace]
+#0 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(70): PDO->__construct()
+#1 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(46): Illuminate\\Database\\Connectors\\Connector->createPdoConnection()
+#2 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection()
+#3 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(184): Illuminate\\Database\\Connectors\\MySqlConnector->connect()
+#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#5 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1064): call_user_func()
+#6 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1100): Illuminate\\Database\\Connection->getPdo()
+#7 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(442): Illuminate\\Database\\Connection->getReadPdo()
+#8 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(368): Illuminate\\Database\\Connection->getPdoForSelect()
+#9 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(705): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}()
+#10 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(672): Illuminate\\Database\\Connection->runQueryCallback()
+#11 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run()
+#12 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2414): Illuminate\\Database\\Connection->select()
+#13 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2402): Illuminate\\Database\\Query\\Builder->runSelect()
+#14 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2936): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#15 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(2403): Illuminate\\Database\\Query\\Builder->onceWithColumns()
+#16 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\\Database\\Query\\Builder->get()
+#17 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(609): Illuminate\\Database\\Eloquent\\Builder->getModels()
+#18 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Database/Concerns/BuildsQueries.php(294): Illuminate\\Database\\Eloquent\\Builder->get()
+#19 /home/wec24/public_html/application/app/Providers/ConfigSystemServiceProvider.php(30): Illuminate\\Database\\Eloquent\\Builder->first()
+#20 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\\Providers\\ConfigSystemServiceProvider->boot()
+#21 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Util.php(40): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#22 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#23 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#24 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call()
+#25 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(924): Illuminate\\Container\\Container->call()
+#26 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(905): Illuminate\\Foundation\\Application->bootProvider()
+#27 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}()
+#28 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(906): array_walk()
+#29 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#30 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(237): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap()
+#31 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith()
+#32 /home/wec24/public_html/application/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#33 /home/wec24/public_html/application/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#34 {main}
+"} 
